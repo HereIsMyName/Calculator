@@ -1,0 +1,122 @@
+
+#container {
+    margin: 0 auto;
+    margin-top: 4%;
+    width: 350px;
+    height: 450px;
+    border: 1px solid black;
+    border-radius: 15px;
+    overflow: hidden;
+    user-select:none;
+    background-color: darkgrey;
+    cursor: pointer
+}
+
+#screen {
+    width: 335px;
+    height: 85px;
+    margin: 6px;
+    border: 1px solid black;
+    border-radius: 7px 7px 0 0;
+    text-align: right;
+    font-size: 1.8em;
+    padding-top: 22px;
+    padding-right:5px;
+    background-color: rgb(53, 50, 50);
+    color: white;
+    overflow: hidden;
+}
+
+#buttons1 {
+    width: 100%;
+    height: 100%;
+    border-top:   1px solid black;
+}
+
+.buttons {
+    box-shadow: -1px 1px black;
+}
+
+.num:active {
+    background-color: #88e66b;
+    box-shadow: -2px 2px rgb(107, 104, 104);
+    transform: translateY(2px);
+  }
+
+.op:active {
+    background-color: #5a98df;
+    box-shadow: -2px 2px rgb(107, 104, 104);
+    transform: translateY(2px);
+  }
+
+#clr:active, #back:active {
+    background-color: #fda1a1;
+    box-shadow: -2px 2px rgb(107, 104, 104);
+    transform: translateY(2px);
+  }
+
+#eq:active {
+    background-color: #e1e783;
+    color: rgb(141, 123, 123);
+    box-shadow: -2px 2px rgb(107, 104, 104);
+    transform: translateY(2px);
+  }
+
+#numbers {
+    width: 260px;
+    height: 100%;
+    text-align: center;
+    padding: 3px;
+    float: left;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.num {
+    float: left;
+    width: 75px;
+    height: 79px;
+    margin: 3px;
+    padding-top: 24px;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 1.6em;
+    background-color: rgb(247, 245, 245);
+}
+
+.operators {
+       float: right;
+       padding: 3px;
+       border-radius: 5px;
+       -moz-user-select: none;
+       user-select: none;
+}
+
+.op {
+    width: 65px;
+    height: 45px;
+    margin: 5px;
+    margin-top: 3px;
+    text-align: center;
+    padding-top: 10px;
+    font-size: 1.5em;
+    border: 1px solid black;
+    background-color: rgb(247, 245, 245);
+    border-radius: 5px;
+    background-color: rgb(71, 67, 67);
+    color: white;
+}
+
+/* #clr {
+    background-color: rgba(201, 67, 67, 0.836);
+    color: white;
+} */
+
+#eq {
+    height: 82px;
+    padding-top: 26px;
+    border-radius: 5px;
+    background-color: rgb(218, 146, 14);
+    font-weight: bold;
+}
+
