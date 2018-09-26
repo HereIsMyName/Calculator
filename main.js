@@ -1,8 +1,5 @@
-let screen = document.getElementById('screen');
 const butt = document.getElementsByClassName('buttons');
-const back = document.getElementById('back');
-const clr = document.getElementById('clr');
-const eq = document.getElementById('eq');
+let screen = document.getElementById('screen');
 
 
 if(window.addEventListener) {
@@ -66,7 +63,7 @@ function store(event) {
     }
     
     // Clears data
-    else if(p === clr || key === 'c' || key === 'Delete' && key !=='.') {
+    else if(p.id === 'clr' || key === 'c' || key === 'Delete' && key !=='.') {
         erased(); 
         return;
     }
@@ -74,7 +71,7 @@ function store(event) {
     else if(screen.innerText !== '-') {
 
         // Calculate input
-        if(key === '=' || p === eq) {
+        if(key === '=' || p.id === 'eq') {
             if(first || eqCount > 0){
                 if(screen.innerText.length === '' && eqCount === 0 || opTrack) {
                     return;
@@ -87,7 +84,7 @@ function store(event) {
         }
         
         // Select operator
-        else if(p.id !== 'back' && p.className === 'op buttons' && p === eq || index > 12) {
+        else if(p.id !== 'back' && p.className === 'op buttons' && p.id === 'eq' || index > 12) {
             operate();
             return;
         }    
