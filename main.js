@@ -1,6 +1,5 @@
 let screen = document.getElementById('screen');
 const butt = document.getElementsByClassName('buttons');
-const ops = document.getElementsByClassName('op');
 const back = document.getElementById('back');
 const clr = document.getElementById('clr');
 const eq = document.getElementById('eq');
