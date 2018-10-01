@@ -104,8 +104,8 @@ function store(event) {
         }    
     }
 
-    // Adds and removes characters to screen
-    if((index < 11 || key === 'Backspace' || p.id === 'back') && key != '=' ){
+    // Adds characters to screen
+    if((index < 11) && key != '=' ){
         charAdd();
         return;
     }   
