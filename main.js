@@ -68,6 +68,13 @@ function store(event) {
         return;
     }
     
+    //Removes characters
+    if((key === 'Backspace' || p.id === 'back') && !clear ) { 
+        backSpace();
+        if(screen.innerText.indexOf('.') === -1) d = false;
+        return;
+    } 
+    
     else if(screen.innerText !== '-') {
 
         // Calculate input
@@ -128,12 +135,6 @@ function store(event) {
             return;
         }
 
-        //Removes characters
-        if((key === 'Backspace' || p.id === 'back') && !clear ) { 
-            backSpace();
-            return;
-        } 
-
         // Adds decimal once per line
         else if(item == '.'){ 
             if(item == '.' && d){
@@ -141,6 +142,7 @@ function store(event) {
             }
             d = true;
         }
+        
         // Adds numbers
         if(index < 11) {
             if(eqCheck) {
