@@ -2,6 +2,8 @@ const butt = document.getElementsByClassName('buttons');
 let screen = document.getElementById('screen');
 
 
+
+
 if(window.addEventListener) {
     window.addEventListener('keydown', function(e) { 
         e.keyCode == 46 || e.keyCode === 8 ? store(e): window.addEventListener('keypress', store)}
@@ -27,6 +29,8 @@ opTrack, // checks if an operator was implemented
 eqCheck, // checks if an evaluation took place
 eqCount = 0; // number of evaluations
 screen.innerText = 0; 
+// let output = document.getElementById('output');
+// output.innerText = 0;
 
 
 function store(event) {
@@ -56,18 +60,19 @@ function store(event) {
             if((charStr == keys[i] && keys[i] !== 0 )|| key == keys[i]) break;
         }
     }
-   
+
     if((screen.innerText == 0 || eqCheck && opTrack) && (key === '-' || k === '-')) {
         screen.innerText = '-';
         return;
     }
     
     // Clears data
-    else if(p.id === 'clr' || key === 'c' || key === 'Delete' && key !=='.') {
+
+    else if(p.id === 'clr' || key === 'c' || key === 'Delete' && key !='.') {
         erased(); 
         return;
     }
-    
+
     //Removes characters
     if((key === 'Backspace' || p.id === 'back') && !clear ) { 
         backSpace();
@@ -80,7 +85,7 @@ function store(event) {
         // Calculate input
         if(key === '=' || p.id === 'eq') {
             if(first || eqCount > 0){
-                if(screen.innerText.length === '' && eqCount === 0 || opTrack) {
+                if(screen.innerText == '0' && eqCount === 0 || opTrack) {
                     return;
                 }
                 equate();
@@ -137,7 +142,7 @@ function store(event) {
 
         // Adds decimal once per line
         else if(item == '.'){ 
-            if(item == '.' && d){
+            if(screen.innerText.indexOf('.') > -1){
                 return;   
             }
             d = true;
@@ -201,6 +206,7 @@ function store(event) {
             second = screen.innerText;
             second = parseFloat(second);
         }
+        // output.innerText = first + opPass + second;
         if     (opPass.indexOf('*') > -1) hold *= second;
         else if(opPass.indexOf('/') > -1) hold /= second;
         else if(opPass.indexOf('+') > -1) hold += second;
@@ -209,7 +215,7 @@ function store(event) {
         screen.innerText = hold;
         d = false;
         eqCount++;
-        eqCheck = true;
+        eqCheck = true;   
     }
 
 
@@ -224,8 +230,8 @@ function store(event) {
             opTrack = false;
             eqCheck = false;
             eqCount = 0;
+            // output.innerText = 0;
             return;
     }
 }
-
 
