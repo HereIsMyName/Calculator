@@ -2,25 +2,14 @@ const butt = document.getElementsByClassName('buttons');
 let screen = document.getElementById('screen');
 
 
-
-
-if(window.addEventListener) {
-    window.addEventListener('keydown', function(e) { 
-        e.keyCode == 46 || e.keyCode === 8 ? store(e): window.addEventListener('keypress', store)}
-    );
-    for(let i = 0; i < butt.length; i++) butt[i].addEventListener('click', store, false);
-}
-else {
-    window.attachEvent('onkeydown', function(e) { 
-        e.keyCode == 46 || e.keyCode === 8 ? store(e): window.attachEvent('onkeypress', store)}
-    );
-    for(let i = 0; i < butt.length; i++) butt[i].attachEvent('onclick', store, false);
-}
+window.addEventListener('keydown', function(e) { 
+    e.keyCode == 46 || e.keyCode === 8 ? store(e): window.addEventListener('keypress', store)}
+);
+for(let i = 0; i < butt.length; i++) butt[i].addEventListener('click', store, false);
 
 
 const keys = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,'.','Del','Backspace','=','*','/','+','-'];
-let d, 
-first,  // first input before operation
+let first,  // first input before operation
 second, // second input thats evaluated with the first
 clear, // checks if screen should clear
 op, // temporary operator
@@ -29,8 +18,6 @@ opTrack, // checks if an operator was implemented
 eqCheck, // checks if an evaluation took place
 eqCount = 0; // number of evaluations
 screen.innerText = 0; 
-// let output = document.getElementById('output');
-// output.innerText = 0;
 
 
 function store(event) {
@@ -60,7 +47,7 @@ function store(event) {
             if((charStr == keys[i] && keys[i] !== 0 )|| key == keys[i]) break;
         }
     }
-
+   
     if((screen.innerText == 0 || eqCheck && opTrack) && (key === '-' || k === '-')) {
         screen.innerText = '-';
         return;
@@ -68,7 +55,7 @@ function store(event) {
     
     // Clears data
 
-    else if(p.id === 'clr' || key === 'c' || key === 'Delete' && key !='.') {
+    else if(p.id === 'clr' || key === 'c' || key === 'Delete' && key !=='.') {
         erased(); 
         return;
     }
@@ -76,7 +63,6 @@ function store(event) {
     //Removes characters
     if((key === 'Backspace' || p.id === 'back') && !clear ) { 
         backSpace();
-        if(screen.innerText.indexOf('.') === -1) d = false;
         return;
     } 
     
@@ -85,7 +71,7 @@ function store(event) {
         // Calculate input
         if(key === '=' || p.id === 'eq') {
             if(first || eqCount > 0){
-                if(screen.innerText == '0' && eqCount === 0 || opTrack) {
+                if(screen.innerText == 0 && eqCount === 0 || opTrack) {
                     return;
                 }
                 equate();
@@ -97,7 +83,7 @@ function store(event) {
         
         // Select operator
         else if(p.id !== 'back' && p.className === 'op buttons' && p.id === 'eq' || index > 12) {
-            operate();
+            operate(item, key);
             return;
         }    
 
@@ -111,127 +97,116 @@ function store(event) {
 
     // Adds characters to screen
     if((index < 11) && key != '=' ){
-        charAdd();
+        charAdd(item, index);
         return;
     }   
+}    
 
-    function backSpace() {
-        if(screen.innerText !== '' && !opTrack && !eqCheck){ 
-            screen.innerText = screen.innerText.slice(0,-1);
-            second = screen.innerText;
-            if(screen.innerText == '') {
-                screen.innerText = 0;
-                second = 0;
-            }
-            return;
-        }
-        else if(screen.innerText == '') {
+function backSpace() {
+    if(screen.innerText !== '' && !opTrack && !eqCheck){ 
+        screen.innerText = screen.innerText.slice(0,-1);
+        second = screen.innerText;
+        if(screen.innerText == '') {
             screen.innerText = 0;
-        }
-        else {
-            screen.innerText = first; 
+            second = 0;
         }
         return;
     }
-
-
-    function charAdd() {
-        if(screen.innerText.length > 21) {
-            return;
-        }
-
-        // Adds decimal once per line
-        else if(item == '.'){ 
-            if(screen.innerText.indexOf('.') > -1){
-                return;   
-            }
-            d = true;
-        }
-        
-        // Adds numbers
-        if(index < 11) {
-            if(eqCheck) {
-                erased();
-                screen.innerText = '';
-            }
-            screen.innerText += item;
-            if(first){
-                second = screen.innerText;
-            }
-            opTrack = false;
-            eqCheck = false;
-            return;
-        }
-        if(eqCheck && (key !== 'Backspace' || p.id !== 'back')) {
-            screen.innerText = first;
-            eqCheck = false;
-            return;
-        }
-        return;
+    else if(screen.innerText == '') {
+        screen.innerText = 0;
     }
-
-
-    function operate() {
-        if(screen.innerText == '.') return;
-        if(item) op = item;
-        else op = key;
-        
-        if(opTrack || clear) {
-            eqCheck = false;
-            opPass = op;
-            return;
-
-        }
-        else if(!first){
-            first = screen.innerText;
-            d = false;
-        }
-        else if(first && !eqCheck){
-            equate();
-        }
-        opPass = op
-        opTrack = true;
-        eqCheck = false;
-        clear = true;
-        return;
+    else {
+        screen.innerText = first; 
     }
-
-    
-    function equate() {
-        if(typeof first ==='string') first = Number(first);
-        let hold = parseFloat(first);
-    
-        second = parseFloat(second);
-        if(eqCount === 0) {
-            second = screen.innerText;
-            second = parseFloat(second);
-        }
-        // output.innerText = first + opPass + second;
-        if     (opPass.indexOf('*') > -1) hold *= second;
-        else if(opPass.indexOf('/') > -1) hold /= second;
-        else if(opPass.indexOf('+') > -1) hold += second;
-        else if(opPass.indexOf('-') > -1) hold -= second;
-        first = hold;
-        screen.innerText = hold;
-        d = false;
-        eqCount++;
-        eqCheck = true;   
-    }
-
-
-    function erased() {
-            screen.innerText = 0;
-            first = "";
-            second = "";
-            opPass = "";
-            op = "";
-            d = false;
-            clear = false;
-            opTrack = false;
-            eqCheck = false;
-            eqCount = 0;
-            // output.innerText = 0;
-            return;
-    }
+    return;
 }
+
+function charAdd(item, index) {
+    if(screen.innerText.length > 21) {
+        return;
+    }
+
+    // Adds decimal once per line
+    else if(item == '.' && screen.innerText.indexOf('.') > -1) { 
+        return;  
+    }
+    
+    // Adds numbers
+    if(index < 11) {
+        if(eqCheck) {
+            erased();
+            screen.innerText = '';
+        }
+        screen.innerText += item;
+        if(first){
+            second = screen.innerText;
+        }
+        opTrack = false;
+        eqCheck = false;
+        return;
+    }
+    if(eqCheck && (key !== 'Backspace' || p.id !== 'back')) {
+        screen.innerText = first;
+        eqCheck = false;
+        return;
+    }
+    return;
+}
+
+function operate(item, key) {
+    if(screen.innerText == '.') return;
+    if(item) op = item;
+    else op = key;
+    
+    if(opTrack || clear) {
+        eqCheck = false;
+        opPass = op;
+        return;
+
+    }
+    else if(!first){
+        first = screen.innerText;
+    }
+    else if(first && !eqCheck){
+        equate();
+    }
+    opPass = op
+    opTrack = true;
+    eqCheck = false;
+    clear = true;
+    return;
+}
+
+function equate() {
+    if(typeof first ==='string') first = Number(first);
+    let hold = parseFloat(first);
+
+    second = parseFloat(second);
+    if(eqCount === 0) {
+        second = screen.innerText;
+        second = parseFloat(second);
+    }
+    if     (opPass.indexOf('*') > -1) hold *= second;
+    else if(opPass.indexOf('/') > -1) hold /= second;
+    else if(opPass.indexOf('+') > -1) hold += second;
+    else if(opPass.indexOf('-') > -1) hold -= second;
+    first = hold;
+    screen.innerText = hold;
+    eqCount++;
+    eqCheck = true;
+}
+
+function erased() {
+    screen.innerText = 0;
+    first = "";
+    second = "";
+    opPass = "";
+    op = "";
+    clear = false;
+    opTrack = false;
+    eqCheck = false;
+    eqCount = 0;
+    return;
+}
+
 
