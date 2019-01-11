@@ -1,4 +1,3 @@
-
 #container {
     margin: 0 auto;
     margin-top: 4%;
@@ -38,13 +37,13 @@
 }
 
 .num:active {
-    background-color: #88e66b;
-    box-shadow: -2px 2px rgb(107, 104, 104);
+    background-color: #c1f7d3;
+    box-shadow: -2px 2px #c5ffb4;
     transform: translateY(2px);
   }
 
 .op:active {
-    background-color: #5a98df;
+    background-color: #8bc7ff;
     box-shadow: -2px 2px rgb(107, 104, 104);
     transform: translateY(2px);
   }
@@ -56,8 +55,8 @@
   }
 
 #eq:active {
-    background-color: #e1e783;
-    color: rgb(141, 123, 123);
+    background-color: #fefff2;
+    color: #8d7b7b;
     box-shadow: -2px 2px rgb(107, 104, 104);
     transform: translateY(2px);
   }
@@ -81,7 +80,7 @@
     border: 1px solid black;
     border-radius: 5px;
     font-size: 1.6em;
-    background-color: rgb(247, 245, 245);
+    background-color: #f7f5f5;
 }
 
 .operators {
@@ -103,7 +102,7 @@
     border: 1px solid black;
     background-color: rgb(247, 245, 245);
     border-radius: 5px;
-    background-color: rgb(71, 67, 67);
+    background-color: #474343;
     color: white;
 }
 
@@ -116,7 +115,6 @@
     height: 82px;
     padding-top: 26px;
     border-radius: 5px;
-    background-color: rgb(218, 146, 14);
+    background-color: #da920e;
     font-weight: bold;
 }
-
