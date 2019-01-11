@@ -60,7 +60,6 @@ function store(event) {
     
     // Changes key colors on keyboard events
     if(event.type != 'click') {
-        console.log('func')
         const nums = Array.from(document.getElementsByClassName('num buttons'));
         const ops = Array.from(document.getElementsByClassName('op buttons'));
         let element;
