@@ -5,6 +5,7 @@ let screen = document.getElementById('screen');
 window.addEventListener('keydown', function(e) { 
     e.keyCode == 46 || e.keyCode === 8 ? store(e): window.addEventListener('keypress', store)}
 );
+
 for(let i = 0; i < butt.length; i++) butt[i].addEventListener('click', store, false);
 
 
@@ -21,15 +22,19 @@ screen.innerText = 0;
 
 
 function store(event) {
-    let k, charStr, p, key, item, index;
-    k = event.keyCode;
-    if(event.target.innerText){k = event.target.innerText};
-    charStr = String.fromCharCode(k);
+    let charStr, p, key, item, index, k = event.keyCode;
+
+    // stores value click mouse events
+    if(event.target.innerText){
+        k = event.target.innerText
+    }
+    
+    charStr = String.fromCharCode(k); // Some values must be converted to a string for readability
     p = event.target;
     key = event.key;
-    
-    // Assign character ops from keyboard input
-    if     (key === 'Del' && event.charCode !== 0) key ='.';
+
+    // Certain browsers output a different values and must be converted 
+    if     (key === 'Del' && event.charCode !== 0) key ='.'; // NOTE: The '.' key sometimes returns a 'del' and must be converted
     else if(key === 'Enter')                       key = '=';
     else if(key === 'Multiply')                    key = '*';
     else if(key === 'Divide')                      key = '/';
@@ -37,30 +42,71 @@ function store(event) {
     else if(key === 'Subtract')                    key = '-';
     
     
-    // Match input
+    // Match and convert values for consistent values
     for(let i = 0; i < keys.length; i++) {
         if(key == keys[i] || k.indexOf(keys[i]) > -1 || charStr == keys[i]) {
             item = keys[i];
-            if(keys[i] === 'Del') key = 'Delete';
-            else if(keys[i] === 'Backspace') key = 'Backspace';
+            if(keys[i] === 'Del') 
+                key = 'Delete';
+
+            else if(keys[i] === 'Backspace') 
+                key = 'Backspace';
+
             index = i;
-            if((charStr == keys[i] && keys[i] !== 0 )|| key == keys[i]) break;
+            if((charStr == keys[i] && keys[i] !== 0 ) || key == keys[i]) 
+                break;
         }
     }
-   
+    
+    // Changes key colors on keyboard events
+    if(event.type != 'click') {
+        console.log('func')
+        const nums = Array.from(document.getElementsByClassName('num buttons'));
+        const ops = Array.from(document.getElementsByClassName('op buttons'));
+        let element;
+        (function() {
+            if (key == 'Delete' || key == 'c') 
+                colors(nums[11], '#fda1a1')
+            
+            else if (key == '=') 
+                colors(ops[5], '#fefff2')
+            
+            else if (key == 'Backspace') 
+                colors(ops[0], '#fda1a1')
+            
+            else if(index < 11) {
+                element = nums.filter(function(el) {
+                    return el.innerText == key 
+                })
+                colors(element[0], '#c5ffb4') 
+            }
+            else if(index > 10) {
+                element = ops.filter(function(el) {
+                    return el.innerText == key 
+                })
+                colors(element[0], '#5a98df') 
+            }
+
+            function colors(el, init) {
+                el.style.backgroundColor = init
+                setTimeout(function() {el.style.backgroundColor = ''}, 100)
+            }
+        })()
+    }
+
+    // allows for addition of a negative value for initial number
     if((screen.innerText == 0 || eqCheck && opTrack) && (key === '-' || k === '-')) {
         screen.innerText = '-';
         return;
     }
     
-    // Clears data
-
+    // Clears all data
     else if(p.id === 'clr' || key === 'c' || key === 'Delete' && key !=='.') {
         erased(); 
         return;
     }
 
-    //Removes characters
+    //Removes last character
     if((key === 'Backspace' || p.id === 'back') && !clear ) { 
         backSpace();
         return;
@@ -103,6 +149,8 @@ function store(event) {
 }    
 
 function backSpace() {
+    // To erase the last character the screen must not be empty and when finally empty is replaced with a '0'
+    // 'opTrack' and 'eqCheck' tell if there was a recent equation or operator input, in which case the values are set and cannot be remoed
     if(screen.innerText !== '' && !opTrack && !eqCheck){ 
         screen.innerText = screen.innerText.slice(0,-1);
         second = screen.innerText;
@@ -158,15 +206,21 @@ function operate(item, key) {
     if(item) op = item;
     else op = key;
     
+    /* Checks and returns if an operator was already initiated
+       otherwise the operator itself would be calculated as a number */
     if(opTrack || clear) {
         eqCheck = false;
         opPass = op;
         return;
 
     }
+
+    // Creates initial value if undefined
     else if(!first){
         first = screen.innerText;
     }
+
+    // Equates recently added value upon pressing operator
     else if(first && !eqCheck){
         equate();
     }
@@ -178,14 +232,19 @@ function operate(item, key) {
 }
 
 function equate() {
+    // Strings are converted to numbers here before equating for both first and second value
     if(typeof first ==='string') first = Number(first);
     let hold = parseFloat(first);
 
+    /* The 'hold' value temporarily holds the 'first' value, and after equating with the 'second' value,
+       is added back to the 'first'*/
     second = parseFloat(second);
     if(eqCount === 0) {
         second = screen.innerText;
         second = parseFloat(second);
     }
+    /* After an initial equation, the value can
+       continually be equated with the last operator entered */
     if     (opPass.indexOf('*') > -1) hold *= second;
     else if(opPass.indexOf('/') > -1) hold /= second;
     else if(opPass.indexOf('+') > -1) hold += second;
@@ -208,5 +267,4 @@ function erased() {
     eqCount = 0;
     return;
 }
-
 
