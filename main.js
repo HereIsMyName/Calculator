@@ -60,11 +60,11 @@ function store(event) {
     
     // Changes key colors on keyboard events
     if(event.type != 'click') {
-        const nums = Array.from(document.getElementsByClassName('num buttons'));
-        const ops = Array.from(document.getElementsByClassName('op buttons'));
+        const nums = document.getElementsByClassName('num buttons');
+        const ops = document.getElementsByClassName('op buttons');
         let element;
         (function() {
-            if (key == 'Delete' || key == 'c') 
+            if ((key == 'Delete' || key == 'c' ) 
                 colors(nums[11], '#fda1a1')
             
             else if (key == '=') 
@@ -74,18 +74,22 @@ function store(event) {
                 colors(ops[0], '#fda1a1')
             
             else if(index < 11) {
-                element = nums.filter(function(el) {
-                    return el.innerText == key 
-                })
-                colors(element[0], '#c5ffb4') 
-            }
-            else if(index > 10) {
-                element = ops.filter(function(el) {
-                    return el.innerText == key 
-                })
-                colors(element[0], '#5a98df') 
+                for(let i = 0; i < nums.length; i++) {
+                    if(nums[i].innerText.trim() == key)
+                    element = nums[i]
+                }
+                colors(element, '#a9fca9') 
             }
 
+            else if(index > 10) {
+                for(let i = 0; i < ops.length; i++) {
+                    if(ops[i].innerText.trim() == key)
+                    element = ops[i]
+                }
+                colors(element, '#8bc7ff') 
+            }
+            
+            // Temporarily add and remove background color to element
             function colors(el, init) {
                 el.style.backgroundColor = init
                 setTimeout(function() {el.style.backgroundColor = ''}, 100)
